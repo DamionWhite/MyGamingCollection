@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
             _id: doc._id,
             request: {
               type: 'GET',
-              url: 'http://localhost:3000/games/' + doc._id
+              url: 'http://game-collections.herokuapp.com/games/' + doc._id
             }
           }
         })
@@ -51,7 +51,7 @@ router.post('/', (req, res, next) => {
           _id: result._id,
           request: {
             type: 'GET',
-            url: "http://localhost:3000/games/" + result._id
+            url: "http://game-collections.herokuapp.com/games/" + result._id
           }
         }
       });
@@ -77,7 +77,7 @@ router.get('/:gameId', (req, res, next) => {
           game: doc,
           request: {
             type: 'GET',
-            url: 'http://localhost:3000/games'
+            url: 'http://game-collections.herokuapp.com/games'
           }
         });
       } else {
@@ -106,7 +106,7 @@ router.patch('/:gameId', (req, res, next) => {
         message: 'Game updated',
         request: {
           type: 'GET',
-          url: 'http://localhost:3000/games/' + id
+          url: 'http://game-collections.herokuapp.com/games/' + id
         }
       });
     })
@@ -127,7 +127,7 @@ router.delete('/:gameId', (req, res, next) => {
         message: 'Game deleted',
         request: {
           type: 'POST',
-          url: 'http://localhost:3000/games',
+          url: 'http://game-collections.herokuapp.com/games',
           body: { name: 'String', price: 'Number' }
         }
       });
