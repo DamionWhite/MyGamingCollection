@@ -50,7 +50,7 @@ router.post('/', (req, res, next) => {
         createdUser: {
           name: result.name,
           email: result.email,
-          password: password,
+          password: result.password,
           _id: result._id,
           request: {
             type: 'GET',
