@@ -14,7 +14,8 @@ router.get('/', (req, res, next) => {
         users: docs.map(doc => {
           return {
             name: doc.name,
-            userImage: doc.userImage,
+            email: doc.email,
+            password: doc.password,
             _id: doc._id,
             request: {
               type: 'GET',
@@ -37,7 +38,8 @@ router.post('/', (req, res, next) => {
   const user = new User({
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
+    password: req.body.password
   });
   user
     .save()
@@ -48,6 +50,7 @@ router.post('/', (req, res, next) => {
         createdUser: {
           name: result.name,
           email: result.email,
+          password: password,
           _id: result._id,
           request: {
             type: 'GET',
@@ -67,7 +70,7 @@ router.post('/', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
-    .select('name email _id')
+    .select('name email password _id')
     .exec()
     .then(doc => {
       console.log("From database", doc);
