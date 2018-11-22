@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const accessory = new Accessory({
     _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
+    accessoryName: req.body.name,
   });
   accessory
     .save()
@@ -67,7 +67,7 @@ router.patch('/:accessoryId', (req, res, next) => {
   Accessory
     .updateOne(
       { _id: id },
-      { $set: { name: req.body.newName } }
+      { $set: { AccessoryName: req.body.newName } }
     )
     .exec()
     .then(result => {
