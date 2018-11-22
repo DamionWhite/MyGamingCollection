@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
         count: docs.length,
         games: docs.map(doc => {
           return {
-            name: doc.name,
+            gameName: doc.name,
             gameImage: doc.gameImage,
             _id: doc._id,
             request: {
@@ -36,7 +36,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
+    gameName: req.body.name,
     gameImage: req.body.gameImage
   });
   game
@@ -46,7 +46,7 @@ router.post('/', (req, res, next) => {
       res.status(201).json({
         message: 'Created game successfully',
         createdGame: {
-          name: result.name,
+          gameName: result.name,
           gameImage: result.gameImage,
           _id: result._id,
           request: {
@@ -68,7 +68,7 @@ router.post('/', (req, res, next) => {
 router.get('/:gameId', (req, res, next) => {
   const id = req.params.gameId;
   Game.findById(id)
-    .select('name _id')
+    .select('gameName _id')
     .exec()
     .then(doc => {
       console.log("From database", doc);
@@ -97,7 +97,7 @@ router.patch('/:gameId', (req, res, next) => {
   Game
     .updateOne(
       { _id: id },
-      { $set: { name: req.body.newName } }
+      { $set: { gameName: req.body.newName } }
     )
     .exec()
     .then(result => {
@@ -128,7 +128,7 @@ router.delete('/:gameId', (req, res, next) => {
         request: {
           type: 'POST',
           url: 'http://localhost:3000/games',
-          body: { name: 'String', price: 'Number' }
+          body: { gameName: 'String', price: 'Number' }
         }
       });
     })

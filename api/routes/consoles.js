@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const gameConsole = new GameConsole({
     _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
+    consoleName: req.body.name,
   });
   gameConsole
     .save()
@@ -66,7 +66,7 @@ router.patch('/:consoleId', (req, res, next) => {
   GameConsole
     .updateOne(
       { _id: id },
-      { $set: { name: req.body.newName } }
+      { $set: { consoleName: req.body.newName } }
     )
     .exec()
     .then(result => {
