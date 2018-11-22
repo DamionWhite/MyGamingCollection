@@ -36,29 +36,6 @@ router.get('/', (req, res, next) => {
     });
 });
 
-<<<<<<< HEAD
-router.post('/', (req, res, next) => {
-  const user = new User({
-    _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
-  user
-    .save()
-    .then(result => {
-      console.log(result);
-      res.status(201).json({
-        message: 'Created user successfully',
-        createdUser: {
-          name: result.name,
-          email: result.email,
-          password: result.password,
-          _id: result._id,
-          request: {
-            type: 'GET',
-            url: "http://game-collections.herokuapp.com/users/" + result._id
-=======
 router.post('/signup', (req, res, next) => {
   User.find({ email: req.body.email })
     .exec()
@@ -80,7 +57,6 @@ router.post('/signup', (req, res, next) => {
               message: "Hashing password failed",
               error: err
             });
->>>>>>> master
           }
           else {
             //  Password successfully hashed
@@ -104,7 +80,7 @@ router.post('/signup', (req, res, next) => {
                     _id: result._id,
                     request: {
                       type: 'GET',
-                      url: "http://localhost:3000/users/" + result._id
+                      url: "http://game-collections.herokuapp.com/users/" + result._id
                     }
                   }
                 });
@@ -120,8 +96,6 @@ router.post('/signup', (req, res, next) => {
       }
     })
     .catch()
-
-
 });
 
 router.post('/login', (req, res, next) => {

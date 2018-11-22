@@ -127,13 +127,8 @@ router.delete('/:gameId', (req, res, next) => {
         message: 'Game deleted',
         request: {
           type: 'POST',
-<<<<<<< HEAD
           url: 'http://game-collections.herokuapp.com/games',
-          body: { name: 'String', price: 'Number' }
-=======
-          url: 'http://localhost:3000/games',
           body: { gameName: 'String', price: 'Number' }
->>>>>>> master
         }
       });
     })
