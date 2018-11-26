@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
             _id: doc._id,
             request: {
               type: 'GET',
-              url: 'http://localhost:3000/users/' + doc._id
+              url: process.env.HOST_NAME + '/users/' + doc._id
             }
           }
         })
@@ -80,7 +80,7 @@ router.post('/signup', (req, res, next) => {
                     _id: result._id,
                     request: {
                       type: 'GET',
-                      url: "http://localhost:3000/users/" + result._id
+                      url: process.env.HOST_NAME + '/users/' + result._id
                     }
                   }
                 });
@@ -162,7 +162,7 @@ router.get('/:userId', (req, res, next) => {
           user: doc,
           request: {
             type: 'GET',
-            url: 'http://localhost:3000/users'
+            url: process.env.HOST_NAME + '/users'
           }
         });
       } else {
@@ -186,7 +186,7 @@ router.delete('/:userId', (req, res, next) => {
         message: 'User deleted',
         request: {
           type: 'POST',
-          url: 'http://localhost:3000/users',
+          url: process.env.HOST_NAME + '/users',
           body: { name: 'String', price: 'Number' }
         }
       });
