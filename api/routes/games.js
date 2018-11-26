@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
             _id: doc._id,
             request: {
               type: 'GET',
-              url: 'http://game-collections.herokuapp.com/games/' + doc._id
+              url: process.env.HOST_NAME + '/games/' + doc._id
             }
           }
         })
@@ -36,7 +36,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
-    gameName: req.body.name,
+    gameName: req.body.gameName,
     gameImage: req.body.gameImage
   });
   game
@@ -46,12 +46,12 @@ router.post('/', (req, res, next) => {
       res.status(201).json({
         message: 'Created game successfully',
         createdGame: {
-          gameName: result.name,
+          gameName: result.gameName,
           gameImage: result.gameImage,
           _id: result._id,
           request: {
             type: 'GET',
-            url: "http://game-collections.herokuapp.com/games/" + result._id
+            url: process.env.HOST_NAME + '/games/' + result._id
           }
         }
       });
@@ -61,8 +61,7 @@ router.post('/', (req, res, next) => {
       res.status(500).json({
         error: err.message
       });
-    })
-
+    });
 });
 
 router.get('/:gameId', (req, res, next) => {
@@ -77,7 +76,7 @@ router.get('/:gameId', (req, res, next) => {
           game: doc,
           request: {
             type: 'GET',
-            url: 'http://game-collections.herokuapp.com/games'
+            url: process.env.HOST_NAME + '/games'
           }
         });
       } else {
@@ -97,7 +96,7 @@ router.patch('/:gameId', (req, res, next) => {
   Game
     .updateOne(
       { _id: id },
-      { $set: { gameName: req.body.newName } }
+      { $set: { gameName: req.body.gameName } }
     )
     .exec()
     .then(result => {
@@ -106,7 +105,7 @@ router.patch('/:gameId', (req, res, next) => {
         message: 'Game updated',
         request: {
           type: 'GET',
-          url: 'http://game-collections.herokuapp.com/games/' + id
+          url: process.env.HOST_NAME + '/games/' + id
         }
       });
     })
@@ -127,7 +126,7 @@ router.delete('/:gameId', (req, res, next) => {
         message: 'Game deleted',
         request: {
           type: 'POST',
-          url: 'http://game-collections.herokuapp.com/games',
+          url: process.env.HOST_NAME + '/games',
           body: { gameName: 'String', price: 'Number' }
         }
       });
