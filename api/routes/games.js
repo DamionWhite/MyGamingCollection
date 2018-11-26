@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 
+// Require Models
 const Game = require('../models/games');
 
+// Get all games
 router.get('/', (req, res, next) => {
   Game.find()
     .select()
@@ -33,6 +35,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// Create a new game
 router.post('/', (req, res, next) => {
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
@@ -64,6 +67,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
+// Get a single game by ID
 router.get('/:gameId', (req, res, next) => {
   const id = req.params.gameId;
   Game.findById(id)
@@ -91,6 +95,7 @@ router.get('/:gameId', (req, res, next) => {
     });
 });
 
+// Update a single game by ID
 router.patch('/:gameId', (req, res, next) => {
   const id = req.params.gameId;
   Game
@@ -117,6 +122,7 @@ router.patch('/:gameId', (req, res, next) => {
     });
 });
 
+// Delete a single game by ID
 router.delete('/:gameId', (req, res, next) => {
   const id = req.params.gameId;
   Game.deleteOne({ _id: id })

@@ -4,8 +4,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Require models
 const User = require('../models/users');
 
+// Get all users
 router.get('/', (req, res, next) => {
   User.find()
     .select()
@@ -36,6 +38,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// Create a new User
 router.post('/signup', (req, res, next) => {
   User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
@@ -98,6 +101,7 @@ router.post('/signup', (req, res, next) => {
     .catch()
 });
 
+// Login a user
 router.post('/login', (req, res, next) => {
   User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
@@ -148,6 +152,7 @@ router.post('/login', (req, res, next) => {
     });
 });
 
+// Get a single user by ID
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
@@ -175,6 +180,7 @@ router.get('/:userId', (req, res, next) => {
     });
 });
 
+// Delete a single user by ID
 router.delete('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.deleteOne({ _id: id })
