@@ -6,6 +6,7 @@ const router = express.Router();
 const GameConsole = require('../models/consoles');
 
 // Get all consoles
+// 'GET' HOST_NAME/consoles
 router.get('/', (req, res, next) => {
   GameConsole.find()
     .select()
@@ -38,6 +39,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Create a new console
+// 'POST' HOST_NAME/consoles
 router.post('/', (req, res, next) => {
   const gameConsole = new GameConsole({
     _id: mongoose.Types.ObjectId(),
@@ -74,6 +76,7 @@ router.post('/', (req, res, next) => {
 });
 
 // Get a single console by ID
+// 'GET' HOST_NAME/consoles/:consoleId
 router.get('/:consoleId', (req, res, next) => {
   const id = req.params.consoleId;
   GameConsole.findById(id)
@@ -102,6 +105,7 @@ router.get('/:consoleId', (req, res, next) => {
 });
 
 // Update a single console by ID
+// 'PATCH' HOST_NAME/consoles/:consoleId
 router.patch('/:consoleId', (req, res, next) => {
   const id = req.params.consoleId;
   GameConsole
@@ -129,6 +133,7 @@ router.patch('/:consoleId', (req, res, next) => {
 });
 
 // Delete a single console by ID
+// 'DELETE' HOST_NAME/consoles/:consoleId
 router.delete('/:consoleId', (req, res, next) => {
   const id = req.params.consoleId;
   GameConsole.deleteOne({ _id: id })

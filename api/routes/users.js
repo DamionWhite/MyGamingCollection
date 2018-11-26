@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
 // Get all users
+// 'GET' HOST_NAME/users
 router.get('/', (req, res, next) => {
   User.find()
     .select()
@@ -39,6 +40,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Create a new User
+// 'POST' HOST_NAME/users/signup
 router.post('/signup', (req, res, next) => {
   User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
@@ -102,6 +104,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 // Login a user
+// 'POST' HOST_NAME/users/login
 router.post('/login', (req, res, next) => {
   User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
@@ -153,6 +156,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // Get a single user by ID
+// 'GET' HOST_NAME/users/:userId
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
@@ -181,6 +185,7 @@ router.get('/:userId', (req, res, next) => {
 });
 
 // Delete a single user by ID
+// 'DELETE' HOST_NAME/users/:userId
 router.delete('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.deleteOne({ _id: id })
