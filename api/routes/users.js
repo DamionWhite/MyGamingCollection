@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  User.find({ userEmail: req.body.userEmail })
+  User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
     .then(user => {
       console.log(user);
@@ -62,7 +62,7 @@ router.post('/signup', (req, res, next) => {
             //  Password successfully hashed
             const user = new User({
               _id: mongoose.Types.ObjectId(),
-              userName: req.body.userName,
+              userName: String(req.body.userName).toLowerCase(),
               userEmail: String(req.body.userEmail).toLowerCase(),
               userPassword: hash
             });
