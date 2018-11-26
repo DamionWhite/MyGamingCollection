@@ -36,7 +36,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
-    gameName: req.body.name,
+    gameName: req.body.gameName,
     gameImage: req.body.gameImage
   });
   game
@@ -46,7 +46,7 @@ router.post('/', (req, res, next) => {
       res.status(201).json({
         message: 'Created game successfully',
         createdGame: {
-          gameName: result.name,
+          gameName: result.gameName,
           gameImage: result.gameImage,
           _id: result._id,
           request: {
@@ -96,7 +96,7 @@ router.patch('/:gameId', (req, res, next) => {
   Game
     .updateOne(
       { _id: id },
-      { $set: { gameName: req.body.newName } }
+      { $set: { gameName: req.body.gameName } }
     )
     .exec()
     .then(result => {

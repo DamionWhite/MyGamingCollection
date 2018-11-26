@@ -15,9 +15,9 @@ router.get('/', (req, res, next) => {
         count: docs.length,
         users: docs.map(doc => {
           return {
-            name: doc.name,
-            email: doc.email,
-            password: doc.password,
+            userName: doc.userName,
+            userEmail: doc.userEmail,
+            userPassword: doc.userPassword,
             _id: doc._id,
             request: {
               type: 'GET',
@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  User.find({ email: req.body.email })
+  User.find({ userEmail: req.body.userEmail })
     .exec()
     .then(user => {
       console.log(user);
@@ -50,7 +50,7 @@ router.post('/signup', (req, res, next) => {
         });
       } else {
         //  Email isn't taken, so create user
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
+        bcrypt.hash(req.body.userPassword, 10, (err, hash) => {
           if (err) {
             //  Password couldn't be hashed
             return res.status(500).json({
@@ -62,9 +62,9 @@ router.post('/signup', (req, res, next) => {
             //  Password successfully hashed
             const user = new User({
               _id: mongoose.Types.ObjectId(),
-              name: req.body.name,
-              email: String(req.body.email).toLowerCase(),
-              password: hash
+              userName: req.body.userName,
+              userEmail: String(req.body.userEmail).toLowerCase(),
+              userPassword: hash
             });
 
             user
@@ -74,9 +74,9 @@ router.post('/signup', (req, res, next) => {
                 res.status(201).json({
                   message: 'Created user successfully',
                   createdUser: {
-                    name: result.name,
-                    email: result.email,
-                    password: result.password,
+                    userName: result.userName,
+                    userEmail: result.userEmail,
+                    userPassword: result.userPassword,
                     _id: result._id,
                     request: {
                       type: 'GET',
@@ -101,7 +101,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  User.find({ email: String(req.body.email).toLowerCase() })
+  User.find({ userEmail: String(req.body.userEmail).toLowerCase() })
     .exec()
     .then(user => {
       //  No users found with that email
@@ -111,7 +111,7 @@ router.post('/login', (req, res, next) => {
         });
       }
 
-      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+      bcrypt.compare(req.body.userPassword, user[0].userPassword, (err, result) => {
         //  Error occured while comparing
         if (err) {
           return res.status(401).json({
@@ -122,7 +122,7 @@ router.post('/login', (req, res, next) => {
         if (result) {
           const token = jwt.sign(
             {
-              email: user[0].email,
+              email: user[0].userEmail,
               userId: user[0]._id
             },
             process.env.JWT_KEY,
@@ -153,7 +153,7 @@ router.post('/login', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
-    .select('name email password _id')
+    .select('userName userEmail userPassword _id')
     .exec()
     .then(doc => {
       console.log("From database", doc);
@@ -187,7 +187,7 @@ router.delete('/:userId', (req, res, next) => {
         request: {
           type: 'POST',
           url: process.env.HOST_NAME + '/users',
-          body: { name: 'String', price: 'Number' }
+          body: { userName: 'String', price: 'Number' }
         }
       });
     })
