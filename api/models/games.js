@@ -7,5 +7,7 @@ const gameSchema = mongoose.Schema({
   gameImage: String
 });
 
+exports.schema = gameSchema;
+
 // Export a mongoose model based on the schema
-module.exports = mongoose.model('Game', gameSchema);
+exports.model = mongoose.model('Game', gameSchema);

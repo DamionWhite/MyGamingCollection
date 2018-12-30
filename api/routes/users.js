@@ -23,4 +23,19 @@ router.get('/:userId', usersController.get_user);
 // 'DELETE' HOST_NAME/users/:userId
 router.delete('/:userId', usersController.delete_user);
 
+//// GAMES ////
+
+// Get all the users games
+// 'GET' HOST_NAME/users/:userId/games
+router.get('/:userId/games', usersController.get_all_games);
+
+// Add a game to user
+// If it doesn't exist in the database, add it
+// 'POST' HOST_NAME/users/:userId/games
+router.post('/:userId/games', usersController.add_game);
+
+// Delete a game from a user's list
+// 'DELETE' HOST_NAME/users/:userId/games/:gameId
+router.delete('/:userId/games/:gameId', usersController.delete_game);
+
 module.exports = router;

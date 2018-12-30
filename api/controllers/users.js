@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 // Require models
 const User = require('../models/users');
+const Game = require('../models/games').model;
 
 exports.get_all_users = (req, res, next) => {
   User.find()
@@ -62,7 +64,8 @@ exports.create_user = (req, res, next) => {
               _id: mongoose.Types.ObjectId(),
               userName: String(req.body.userName).toLowerCase(),
               userEmail: String(req.body.userEmail).toLowerCase(),
-              userPassword: hash
+              userPassword: hash,
+              userGames: []
             });
 
             user
@@ -75,6 +78,7 @@ exports.create_user = (req, res, next) => {
                     userName: result.userName,
                     userEmail: result.userEmail,
                     userPassword: result.userPassword,
+                    userGames: result.userGames,
                     _id: result._id,
                     request: {
                       type: 'GET',
@@ -194,3 +198,125 @@ exports.delete_user = (req, res, next) => {
       });
     });
 };
+
+// Games
+
+exports.get_all_games = (req, res, next) => {
+  const id = req.params.userId;
+  User.findById(id)
+    .select('games')
+    .exec()
+    .then(docs => {
+      console.log("From database", docs);
+      if (docs) {
+        const response = {
+          count: docs.games.length,
+          games: docs.games.map(doc => {
+            return {
+              gameName: doc.gameName,
+              _id: doc._id,
+              request: {
+                type: 'GET',
+                url: process.env.HOST_NAME + '/users/' + id + '/games/' + doc._id
+              }
+            }
+          })
+        };
+        res.status(200).json(response);
+      } else {
+        res.status(404).json({
+          message: "No valid user found for provided ID"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err.message);
+      res.status(500).json({ error: err.message });
+    });
+};
+
+// TODO
+exports.find_game = () => { };
+
+// TODO
+exports.add_game = (req, res, next) => {
+  const userId = req.params.userId;
+  const game = new Game({
+    _id: mongoose.Types.ObjectId(),
+    gameName: req.body.gameName
+  });
+
+  User.findById(userId)
+    .exec()
+    .then(user => {
+      user.games.push(game);
+      user.save()
+        .then(result => {
+          res.status(201).json({
+            message: 'Game created'
+          });
+        })
+        .catch(err => {
+          console.log(err.message);
+          res.status(500).json({
+            error: err.message
+          });
+        });
+    })
+    .catch(err => {
+      console.log(err.message);
+      res.status(500).json({
+        error: err.message
+      });
+    });
+};
+
+// TODO
+exports.update_game = () => {
+
+};
+
+// TODO
+exports.delete_game = (req, res, next) => {
+  const userId = req.params.userId;
+  const gameId = mongoose.Types.ObjectId(req.params.gameId);
+
+  User.findById(userId)
+    .then(user => {
+      // Remove game from user.games
+      console.log(gameId);
+      user.games.pull(gameId);
+      console.log(user.games.toObject())
+
+      user.save()
+        .then(result => {
+          res.status(200).json({
+            message: result
+          });
+        })
+        .catch(err => {
+          console.log(err.message);
+          res.status(500).json({
+            error: err.message
+          });
+        });
+    })
+    // User not found
+    .catch(err => {
+      console.log(err.message);
+      res.status(500).json({
+        error: err.message
+      });
+    });
+};
+
+// TODO
+function getGameId(games, gameName) {
+  for (game in games) {
+    if (games[game].name === gameName) {
+      return games[game]._id;
+    }
+  }
+  // No Game found with 'gameName' as name
+  return null;
+}

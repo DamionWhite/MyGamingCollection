@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Require Models
-const Game = require('../models/games');
+const Game = require('../models/games').model;
 
 exports.get_all_games = (req, res, next) => {
   Game.find()
