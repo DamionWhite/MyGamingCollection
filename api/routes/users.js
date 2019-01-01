@@ -19,6 +19,10 @@ router.post('/login', usersController.login_user);
 // 'GET' HOST_NAME/users/:userId
 router.get('/:userId', usersController.get_user);
 
+// Get a single user by Token
+// 'POST' HOST_NAME/users/get_by_token
+router.post('/get_by_token', usersController.get_user_by_token);
+
 // Delete a single user by ID
 // 'DELETE' HOST_NAME/users/:userId
 router.delete('/:userId', usersController.delete_user);
