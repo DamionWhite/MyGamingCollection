@@ -193,7 +193,10 @@ exports.get_user_by_token = (req, res, next) => {
       console.log("From database", doc);
       if (doc) {
         res.status(200).json({
-          user: doc,
+          user: {
+            email: user[0].userEmail,
+            name: user[0].userName
+          },
           request: {
             type: 'GET',
             url: process.env.HOST_NAME + '/users'
